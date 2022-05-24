@@ -11,5 +11,7 @@
 # phoenix
 A tool for steganography of png files .
 
+-----
+
 ## Screenshot:
 ![menu1](https://github.com/AdolfMacro/phoenix/blob/main/screenshots/1.png?raw=true)
