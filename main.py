@@ -4,6 +4,7 @@ from os.path import isfile
 from platform import system as osType
 from cryptography.fernet import Fernet
 from random import choice
+from intro import IntroMain
 def rgb(r, g, b):
     return "\033[38;2;{};{};{}m".format(r, g, b)
 def clear():
@@ -50,6 +51,8 @@ def rd():
         data=ferObj.decrypt(data.encode()).decode()
     input(f"{Fore.LIGHTYELLOW_EX}\n{data}\nEnter to return main menu : {Fore.RESET}")
 def banner():
+    clear()
+    IntroMain()
     clear()
     banner=r"""
 {}
