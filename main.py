@@ -79,8 +79,8 @@ def banner():
 Enter your selection : """.format(choice((rgb( 0, 238, 255 ) , rgb( 27, 255, 0 ) , rgb( 255, 0, 224 ) , rgb( 252, 255, 0 ) , rgb(255, 128, 0))))
     return banner
 def main():
+    selection=input(banner())
     while 1 :
-        selection=input(banner())
         if selection=='1':
             try:
                 wr()
