@@ -52,7 +52,6 @@ def rd():
     input(f"{Fore.LIGHTYELLOW_EX}\n{data}\nEnter to return main menu : {Fore.RESET}")
 def banner():
     clear()
-    IntroMain()
     clear()
     banner=r"""
 {}
@@ -79,8 +78,9 @@ def banner():
 Enter your selection : """.format(choice((rgb( 0, 238, 255 ) , rgb( 27, 255, 0 ) , rgb( 255, 0, 224 ) , rgb( 252, 255, 0 ) , rgb(255, 128, 0))))
     return banner
 def main():
-    selection=input(banner())
+    IntroMain()
     while 1 :
+        selection=input(banner())
         if selection=='1':
             try:
                 wr()
