@@ -21,6 +21,11 @@ bash installer.sh
 ```
 **Please run with normal user (do not run with root user)**
 
+
+
+
+#### - -nb : This switch is used to not display the intro.
+
 -----
 
 ## Screenshot:
