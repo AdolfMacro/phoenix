@@ -22,7 +22,7 @@ replacewith=""
 line="${line/${replace}/${replacewith}}"
 echo $line
 sudo -u root cp -R $line/* /usr/src/phoenix/
-sudo sh -c 'echo "python3 /usr/src/phoenix/main.py" > /usr/local/bin/phoenix'
+sudo sh -c 'echo "python3 /usr/src/phoenix/main.py $1" > /usr/local/bin/phoenix'
 sudo -u root chmod +x /usr/local/bin/phoenix
 echo """
 ██████╗  ██████╗ ███╗   ██╗███████╗
