@@ -24,7 +24,7 @@ bash installer.sh
 
 
 
-#### - -nb : This switch is used to not display the intro.
+- **-nb : This switch is used to not display the intro.**
 
 -----
 
