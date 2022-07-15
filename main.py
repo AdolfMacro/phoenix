@@ -27,8 +27,8 @@ def wr():
                 break
         ferObj=Fernet(key)
         data=ferObj.encrypt(data.encode()).decode()
-    fileName=input(f"{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}")
-    outName=input(f"{Fore.LIGHTMAGENTA_EX}\nEnter the name of the output image file : ")
+    fileName=system(f"read -e -p'{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}'")
+    outName=system(f"read -e -p'{Fore.LIGHTMAGENTA_EX}\nEnter the name of the output image file : '")
     if isfile(fileName):
         with open(fileName,"rb") as f:
             out=open(outName,"wb")
@@ -37,7 +37,7 @@ def wr():
     else:
         input(f"{Fore.LIGHTRED_EX}File not found : {fileName}\n\nEnter to continue : {Fore.RESET}")
 def rd():
-    fileName=input(f"{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}")    
+    fileName=system(f"read -e -p'{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}'")    
     ferObj=False
     if input(f"{Fore.LIGHTBLUE_EX}Is the data encrypted ?[Y/n] {Fore.RESET}").lower()=="y":
         key=input(f"{Fore.LIGHTMAGENTA_EX}Enter the key : {Fore.RESET}").encode()
