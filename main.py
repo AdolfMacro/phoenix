@@ -6,6 +6,7 @@ from cryptography.fernet import Fernet
 from random import choice
 from intro import IntroMain
 from sys import argv
+import subprocess
 def rgb(r, g, b):
     return "\033[38;2;{};{};{}m".format(r, g, b)
 def clear():
@@ -27,8 +28,10 @@ def wr():
                 break
         ferObj=Fernet(key)
         data=ferObj.encrypt(data.encode()).decode()
-    fileName=system(f"read -e -p'{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}'")
-    outName=system(f"read -e -p'{Fore.LIGHTMAGENTA_EX}\nEnter the name of the output image file : '")
+    fileName=subprocess.check_output(f"read -e -p'{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}';echo $REPLY", shell=True)
+    fileName=(fileName.decode('utf-8')).rstrip()
+    outName=subprocess.check_output(f"read -e -p'{Fore.LIGHTMAGENTA_EX}\nEnter the name of the output image file : ';echo $REPLY", shell=True)
+    outName=(outName.decode('utf-8')).rstrip()
     if isfile(fileName):
         with open(fileName,"rb") as f:
             out=open(outName,"wb")
@@ -37,7 +40,8 @@ def wr():
     else:
         input(f"{Fore.LIGHTRED_EX}File not found : {fileName}\n\nEnter to continue : {Fore.RESET}")
 def rd():
-    fileName=system(f"read -e -p'{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}'")    
+    fileName=subprocess.check_output(f"read -e -p'{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}';echo $REPLY", shell=True)
+    fileName=(fileName.decode('utf-8')).rstrip()
     ferObj=False
     if input(f"{Fore.LIGHTBLUE_EX}Is the data encrypted ?[Y/n] {Fore.RESET}").lower()=="y":
         key=input(f"{Fore.LIGHTMAGENTA_EX}Enter the key : {Fore.RESET}").encode()
