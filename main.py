@@ -6,6 +6,7 @@ from cryptography.fernet import Fernet
 from random import choice
 from intro import IntroMain
 from sys import argv
+from tools import updater
 def rgb(r, g, b):
     return "\033[38;2;{};{};{}m".format(r, g, b)
 def clear():
@@ -74,7 +75,9 @@ def banner():
 
                     [ 1 ] Bind data to image                [ 2 ] Read data from an image
 
-                    [ 3 ] Developer information             [ 4 ] Exit
+                    [ 3 ] Developer information             [ 4 ] Check for updates
+
+                    [ 5 ] Exit
 
 Enter your selection : """.format(choice((rgb( 0, 238, 255 ) , rgb( 27, 255, 0 ) , rgb( 255, 0, 224 ) , rgb( 252, 255, 0 ) , rgb(255, 128, 0))))
     return banner
@@ -111,6 +114,8 @@ def main():
             except KeyboardInterrupt:
                 pass
         elif selection=="4":
+            updater.mainUpdater()
+        elif selection=="5":
             exit()
 if __name__=="__main__"    :
     try:
