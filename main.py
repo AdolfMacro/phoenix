@@ -1,124 +1,82 @@
-from colorama import Fore
-from os import system
-from os.path import isfile
-from platform import system as osType
-from cryptography.fernet import Fernet
-from random import choice
-from intro import IntroMain
-from sys import argv
-from tools import updater
-def rgb(r, g, b):
-    return "\033[38;2;{};{};{}m".format(r, g, b)
-def clear():
-    if "windows"in osType().lower():
-        system("cls")
-    else :
-        system("clear")
-def wr():
-    print(f"{Fore.LIGHTRED_EX}Enter the data : {Fore.RESET}")
-    data=''
-    sen='1'
-    while sen.strip():
-        sen=input(f"{Fore.LIGHTCYAN_EX}>{Fore.RESET}")+"\n"
-        data+=sen
-    if input(f"{Fore.LIGHTYELLOW_EX}Do you want the data to be encrypted [Y/n] : {Fore.RESET}").lower() == 'y':
-        key=Fernet.generate_key()
-        while 1:
-            if input(f"{Fore.LIGHTBLUE_EX}\nYour decryption key is {key.decode()}\n\nStore it in a safe place\n\ndo you accept [Y/n]?{Fore.RESET}").lower()=='y':
-                break
-        ferObj=Fernet(key)
-        data=ferObj.encrypt(data.encode()).decode()
-    fileName=input(f"{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}")
-    outName=input(f"{Fore.LIGHTMAGENTA_EX}\nEnter the name of the output image file : ")
-    if isfile(fileName):
-        with open(fileName,"rb") as f:
-            out=open(outName,"wb")
-            out.write(f.read()+data.strip().encode())
-            out.close()
-    else:
-        input(f"{Fore.LIGHTRED_EX}File not found : {fileName}\n\nEnter to continue : {Fore.RESET}")
-def rd():
-    fileName=input(f"{Fore.LIGHTCYAN_EX}\nEnter the image file name ({Fore.LIGHTRED_EX}Only png files are supported{Fore.LIGHTCYAN_EX}): {Fore.RESET}")    
-    ferObj=False
-    if input(f"{Fore.LIGHTBLUE_EX}Is the data encrypted ?[Y/n] {Fore.RESET}").lower()=="y":
-        key=input(f"{Fore.LIGHTMAGENTA_EX}Enter the key : {Fore.RESET}").encode()
-        try:
-            ferObj=Fernet(key)
-        except:
-            print(f"{Fore.LIGHTRED_EX}Something is wrong, please check the decryption key.{Fore.RESET}")
+#!/usr/bin/env python3
+"""Phoenix - PNG steganography with a fullscreen terminal GUI."""
 
-    with open(fileName,"rb") as f:
-        data = f.read().split(b'IEND\xaeB`\x82')[1].decode('utf-8')
-    if ferObj:
-        data=ferObj.decrypt(data.encode()).decode()
-    input(f"{Fore.LIGHTYELLOW_EX}\n{data}\nEnter to return main menu : {Fore.RESET}")
-def banner():
-    clear()
-    clear()
-    banner=r"""
-{}
+from __future__ import annotations
 
-     _/|       |\_								         _/|       |\_
-    /  |       |  \								        /  |       |  \
-   |    \     /    |  @@@@@@@   @@@  @@@   @@@@@@   @@@@@@@@  @@@  @@@  @@@  @@@  @@@  |    \     /    |
-   |  \ /     \ /  |  @@@@@@@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@ @@@  @@@  @@@  @@@  |    \     /    |
-   | \  |     |  / |  @@!  @@@  @@!  @@@  @@!  @@@  @@!       @@!@!@@@  @@!  @@!  !@@  | \  |     |  / |  
-   | \ _\_/^\_/_ / |  !@!  @!@  !@!  @!@  !@!  @!@  !@!       !@!!@!@!  !@!  !@!  @!!  | \ _\_/^\_/_ / |  
-   |    --\//--    |  @!@@!@!   @!@!@!@!  @!@  !@!  @!!!:!    @!@ !!@!  !!@   !@@!@!   |    --\//--    |
-    \_  \     /  _/   !!@!!!    !!!@!!!!  !@!  !!!  !!!!!:    !@!  !!!  !!!    @!!!     \_  \     /  _/
-      \__    __/      !!:       !!:  !!!  !!:  !!!  !!:       !!:  !!!  !!:   !: :!!	  \__  |  __/
-         \ _ /	      :!:       :!:  !:!  :!:  !:!  :!:       :!:  !:!  :!:  :!:  !:!        \ _ /
-        _/   \_        ::       ::   :::  ::::: ::   :: ::::   ::   ::   ::   ::  :::       _/   \_
-       / _/|\_ \       :         :   : :   : :  :   : :: ::   ::    :   :     :   ::       / _/|\_ \
-        /  |  \  									    /  |  \  
-         / ࿕ \										     / ࿕ \
+import sys
+from pathlib import Path
 
-                    [ 1 ] Bind data to image                [ 2 ] Read data from an image
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-                    [ 3 ] Developer information             [ 4 ] Check for updates
+from phoenix import VERSION  # noqa: E402
 
-                    [ 5 ] Exit
 
-Enter your selection : """.format(choice((rgb( 0, 238, 255 ) , rgb( 27, 255, 0 ) , rgb( 255, 0, 224 ) , rgb( 252, 255, 0 ) , rgb(255, 128, 0))))
-    return banner
-def main():
-    if not "-nb" in argv :
-        IntroMain()
-    while 1 :
-        selection=input(banner())
-        if selection=='1':
-            try:
-                wr()
-            except KeyboardInterrupt:
-                pass
-        elif selection=="2":
-            try:
-                rd()
-            except KeyboardInterrupt:
-                pass
-        elif selection=="3":
-            clear()
-            try:
-                print(Fore.LIGHTYELLOW_EX , """
-      _---~~(~~-_.
-    _{        )   )         
-  ,   ) -~~- ( ,-' )_       Hi, I'm Mani
- (  `-,_..`., )-- '_,)      You can get my complete information from this site:
-( ` _)  (  -~( -_ `,  }     https://adolfmacro.github.io/mani/
-(_-  _  ~_-~~~~`,  ,' )     
-  `~ -^(    __;-,((()))     My GitHub Address: https://github.com/adolfmacro
-        ~~~~ {_ -_(())      E-mail : m4nikamran@gmail.com
-               `\  }        Telegram : https://t.me/manikamran
-                 { }      """)
-                input(f"\n\n    Enter to exit : {Fore.RESET}")
-            except KeyboardInterrupt:
-                pass
-        elif selection=="4":
-            updater.mainUpdater()
-        elif selection=="5":
-            exit()
-if __name__=="__main__"    :
+def _version() -> str:
+    target = Path(__file__).resolve().parent / "VERSION.txt"
     try:
-        main()
+        return target.read_text(encoding="utf-8").strip() or VERSION
+    except OSError:
+        return VERSION
+
+
+def main() -> int:
+    version = _version()
+    argv = sys.argv[1:]
+
+    if "-h" in argv or "--help" in argv:
+        print(
+            "phoenix - hide data inside PNG images\n\n"
+            "usage: phoenix [option]\n\n"
+            "  -h, --help      show this message\n"
+            "  -v, --version   print the version\n"
+            "      --check     compare against the published version, then exit\n\n"
+            "Without options the fullscreen GUI opens.\n"
+            "In the GUI: F11 toggles fullscreen, ESC leaves it, 1-5 pick a page,\n"
+            "CTRL+Q quits."
+        )
+        return 0
+
+    if "-v" in argv or "--version" in argv:
+        print(f"phoenix {version}")
+        return 0
+
+    if "--check" in argv:
+        from phoenix.updates import check_remote_version
+
+        result = check_remote_version()
+        if result["error"]:
+            print(f"phoenix {version}\n{result['error']}")
+            return 1
+        if result["outdated"]:
+            state = f"update available: {result['remote']}"
+        elif result["ahead"]:
+            state = (
+                f"ahead of the published build ({result['remote']} on GitHub)"
+            )
+        else:
+            state = "up to date"
+        print(f"phoenix {version} -> published {result['remote']} ({state})")
+        return 0
+
+    try:
+        from phoenix.gui import launch
+    except ImportError as exc:
+        print(
+            "Phoenix needs PyQt6 for its interface.\n"
+            f"  import failed: {exc}\n\n"
+            "Install it with:\n"
+            "  pip install PyQt6\n"
+            "or run the full installer:\n"
+            "  bash installer.sh",
+            file=sys.stderr,
+        )
+        return 1
+
+    return launch(version)
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
     except KeyboardInterrupt:
-        exit()
+        sys.exit(130)
